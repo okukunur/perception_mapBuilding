@@ -1,0 +1,8 @@
+prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install
+
+Name: lms1xx
+Description: Description of lms1xx
+Version: 0.1.6
+Cflags: 
+Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install/lib 
+Requires: roscpp

@@ -1,0 +1,13 @@
+<launch>
+
+
+
+  <param name="wall_distance" type="double" value="0.7" />
+  <param name="resume_delay" type="double" value="10" />
+  <param name="max_speed" type="double" value="0.3" />
+  <param name="min_speed" type="double" value="0.0" />
+  <param name="explore_time" type="double" value="30" />
+
+  <!--node pkg="linefollower" type="line_follower.py" name="eyes" /> -->
+
+</launch>

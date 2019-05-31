@@ -1,0 +1,58 @@
+import numpy as np
+import cv2
+
+# Load a color image
+#image = cv2.imread('1.png',1)
+image = cv2.imread('4.jpg',1)
+#cv2.imshow('image',image)
+h, w, d = image.shape
+search_top = h/2
+search_bot = search_top + 30
+image[0:search_top, 0:w] = 0
+
+hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+lower_yellow = np.array([110,50,50])
+upper_yellow = np.array([130,255,255])
+mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+res = cv2.bitwise_and(image, image, mask=mask)
+cv2.imshow("window", res)
+#cv2.imshow("hsv", hsv)
+
+gray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
+ret,thresh1 = cv2.threshold(gray,0,255,cv2.THRESH_BINARY)
+
+#cv2.imshow("theshold", thresh1)
+
+contours,_ = cv2.findContours(thresh1.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+
+area = 100
+filtered_contours = filter(lambda x: cv2.contourArea(x) > area, contours)
+
+# Draw final contours
+final = np.zeros_like(thresh1)
+cv2.drawContours(final, filtered_contours, -1, 255, -1)
+
+cv2.imshow('Shapes', final)
+
+contourslast,hierarchy = cv2.findContours(final, 1, 2)
+#print len(contourslast)
+
+areas = [cv2.contourArea(c) for c in contourslast]
+max_index = np.argmax(areas)
+
+
+
+
+rows,cols = final.shape[:2]
+[vx,vy,x,y] = cv2.fitLine(contourslast[max_index], cv2.cv.CV_DIST_L2,0,0.01,0.01)
+lefty = int((-x*vy/vx) + y)
+righty = int(((cols-x)*vy/vx)+y)
+cv2.line(final,(cols-1,righty),(0,lefty),(255,255,255),1)
+cv2.imshow('final', final)
+
+print -vy/vx
+print np.arctan(-vy/vx)
+print np.arctan(-vy/vx)*(180/np.pi)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()

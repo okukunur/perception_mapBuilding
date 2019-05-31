@@ -1,0 +1,14 @@
+<launch>
+
+  <!-- Launch parameters of robot used in navigation -->
+  <param name="maxSpeed"  type="double" value="0.05" />
+  <param name="delayT"    type="double" value="2.0" />
+  <param name="distanceD" type="double" value="1.0" />
+  <param name="linear/x/max_acceleration" type="double" value="7.0" />
+  <param name="linear/x/has_acceleration_limits" type="bool" value="true" />
+
+
+  <!--node pkg="linestopping" type="line_stopping.py" name="eyes" /-->
+
+  
+</launch>

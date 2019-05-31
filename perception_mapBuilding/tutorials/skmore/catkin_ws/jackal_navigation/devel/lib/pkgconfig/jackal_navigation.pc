@@ -1,0 +1,8 @@
+prefix=/home/robotics/royalpotato/skmore/jackal_navigation/devel
+
+Name: jackal_navigation
+Description: Description of jackal_navigation
+Version: 0.5.3
+Cflags: 
+Libs: -L/home/robotics/royalpotato/skmore/jackal_navigation/devel/lib 
+Requires: 

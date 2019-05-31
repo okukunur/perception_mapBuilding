@@ -1,0 +1,94 @@
+<launch>
+
+  <!-- Launch parameters of robot used in navigation -->
+  <param name="maxSpeed"  type="double" value="1.5" />
+  <param name="delayT"    type="double" value="20.0" />
+  <param name="distanceD" type="double" value="0.8" />
+
+  <!-- PID controller paramters which can be used -->
+  <!-- <double>("Kp", Kp, 1.0) -->
+  <!-- <double>("Ki", Ki, 0.0) -->
+  <!-- <double>("Kd", Kd, 0.0) -->
+  <!-- <double>("upper_limit", upper_limit, 1000.0) -->
+  <!-- <double>("lower_limit", lower_limit, -1000.0) -->
+  <!-- <double>("windup_limit", windup_limit, 1000.0) -->
+  <!-- <double>("cutoff_frequency", cutoff_frequency, -1.0) -->
+  <!-- <std::string>("topic_from_controller", topic_from_controller, "control_effort") -->
+  <!-- <std::string>("topic_from_plant", topic_from_plant, "state") -->
+  <!-- <std::string>("setpoint_topic", setpoint_topic, "setpoint") -->
+  <!-- <std::string>("pid_enable_topic", pid_enable_topic, "pid_enable") -->
+  <!-- <double>("max_loop_frequency", max_loop_frequency, 1.0) -->
+  <!-- <double>("min_loop_frequency", min_loop_frequency, 1000.0) -->
+  <!-- <bool>("angle_error", angle_error, false) -->
+  <!-- <double>("angle_wrap", angle_wrap, 2.0*3.14159) -->
+
+  <!-- Launch parameters pid for robot used in navigation -->
+    <!-- <node name="controller" pkg="pid" type="controller" ns="velocity_pid" output="screen" > -->
+      <!-- <param name="node_name" value="velocity_pid" /> -->
+      <!-- <param name="Kp" value="1.0" /> -->
+      <!-- <param name="Ki" value="0.0" /> -->
+      <!-- <param name="Kd" value="0.1" /> -->
+      <!-- <param name="upper_limit" value="2" /> -->
+      <!-- <param name="lower_limit" value="-2" /> -->
+      <!-- <param name="windup_limit" value="2" /> -->
+      <!-- <param name="max_loop_frequency" value="100.0" /> -->
+      <!-- <param name="min_loop_frequency" value="100.0" /> -->
+      <!-- <remap from="setpoint" to="/setpoint" /> -->
+     <!-- </node> -->
+
+
+   <!--  <node name="controller" pkg="pid" type="controller" ns="angular_pid" output="screen" > -->
+      <!-- <param name="node_name" value="angular_pid" /> -->
+      <!-- <param name="Kp" value="1.0" /> -->
+      <!-- <param name="Ki" value="0.0" /> -->
+      <!-- <param name="Kd" value="0.3" /> -->
+      <!-- <param name="upper_limit" value="2" /> -->
+      <!-- <param name="lower_limit" value="-2" /> -->
+      <!-- <param name="windup_limit" value="2" /> -->
+      <!-- <param name="max_loop_frequency" value="100.0" /> -->
+      <!-- <param name="min_loop_frequency" value="100.0" /> -->
+      <!-- <remap from="setpoint" to="/setpoint" /> -->
+     <!-- </node> -->
+
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+  <arg name="world_name" value="$(find lab3_pkg)/worlds/project3.world"/>
+
+  <!-- Short-term hack to support the original front_laser:=true argument for spawning
+       the simulator. This will be removed in favour of using the config:=x arg instead. -->
+  <arg name="front_laser" default="false" />
+  <arg name="default_config" value="front_laser" if="$(arg front_laser)" />
+  <arg name="default_config" value="base" unless="$(arg front_laser)" /> 
+  <!-- end of hack -->
+
+  <!-- Configuration of Jackal which you would like to simulate.
+       See jackal_description for details. -->
+  <arg name="config" default="$(arg default_config)" />
+
+  <!-- Launch Gazebo with the specified world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="0" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+    <arg name="world_name" value="$(arg world_name)" />
+  </include>
+  
+  <!-- Load Jackal's description, controllers, and teleop nodes. -->
+  <include file="$(find jackal_description)/launch/description.launch">
+    <arg name="config" value="$(arg config)" />
+  </include>
+  <include file="$(find jackal_control)/launch/control.launch" />
+  <include file="$(find jackal_navigation)/launch/include/gmapping.launch" />
+  <include file="$(find jackal_control)/launch/teleop.launch">  
+    <arg name="joystick" value="false"/>
+  </include>
+  
+  <!--Making sure that the laserscan starts right away as well as the twist filtering -->
+  <node pkg="lab3_pkg" type="laser_scan.py" name="laser_based_control" />
+  <node pkg="lab3_pkg" type="twistBuffer.py" name="teleop_impulse_filtering" />
+
+  <!-- Spawn Jackal -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" args="-urdf -model jackal -param robot_description -x 0 -y 0 -z 1.0" />
+</launch>

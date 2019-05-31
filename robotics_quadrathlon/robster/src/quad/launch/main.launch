@@ -1,0 +1,71 @@
+<launch>
+
+  <!-- Launch parameters of robot used in navigation -->
+  <param name="maxSpeed"  type="double" value="0.75" />
+  <param name="maxSpeed_stopping"  type="double" value="0.5" />
+  <param name="delayT"    type="double" value="2.0" />
+  <param name="distanceD" type="double" value="1.0" />
+  <param name="wall_dist" type="double" value="0.8" />
+  <param name="minSpeed"  type="double" value="0.2" />
+
+  <param name="foo" value="$(optenv JACKAL_LASER 0)" />
+  <param name="foo1" value="$(optenv JACKAL_FLEA3 0)" />
+
+  <env name="JACKAL_LASER" value="0" />
+
+
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+  <arg name="default_config" value="base"/> 
+
+  <!-- Configuration of Jackal which you would like to simulate.
+       See jackal_description for details. -->
+  <arg name="config" default="$(arg default_config)" />
+
+  <!-- Load Jackal's description, controllers, and teleop nodes. -->
+  <include file="$(find jackal_description)/launch/description.launch">
+    <arg name="config" value="$(arg config)" />
+  </include>
+
+  <include file="$(find jackal_control)/launch/control.launch" />
+  <include file="$(find jackal_navigation)/launch/include/gmapping.launch" />
+  <include file="$(find jackal_control)/launch/teleop.launch">  
+    <arg name="joystick" value="false"/>
+  </include>
+  
+  
+  <include file="$(find quad)/launch/usbcam.launch" />
+  <include file="$(find quad)/launch/hukoyo.launch" />
+  
+  <!-- Run stereo image -->
+  <!--node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc"/>-->
+
+  <node name="controller" pkg="pid" type="controller" ns="linear_pid" output="screen" >
+      <param name="node_name" value="linear_pid" />
+      <param name="Kp" value="0.00009" />
+      <param name="Ki" value="1.6" />
+      <param name="Kd" value="0.0" />
+      <param name="Kp_scale" value="1" />
+      <param name="Ki_scale" value="1" />
+      <param name="Kd_scale" value="0.1" />
+      <param name="max_loop_frequency" value="1000.0" />
+      <param name="min_loop_frequency" value="1.0" />
+      </node>
+
+  <node name="controller" pkg="pid" type="controller" ns="angular_pid" output="screen" >
+      <param name="node_name" value="angular_pid" />
+      <param name="Kp" value="1.2" />
+      <param name="Ki" value="0.2" />
+      <param name="Kd" value="0.0" />
+      <param name="Kp_scale" value="0.1" />
+      <param name="Ki_scale" value="1.0" />
+      <param name="Kd_scale" value="0.1" />
+      <param name="max_loop_frequency" value="1000.0" />
+      <param name="min_loop_frequency" value="1.0" />
+      </node>
+
+  <!-- Run pidWrapper -->
+  <node pkg="quad" type="pidWrapper.py" name="buffer" />
+
+</launch>

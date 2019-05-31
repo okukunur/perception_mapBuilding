@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- Launch parameters of robot used in navigation -->
+  <param name="maxSpeed"  type="double" value="0.4" />
+  <param name="delayT"    type="double" value="2.0" />
+  <param name="distanceD" type="double" value="1.0" />
+  <param name="wall_dist" type="double" value="0.8" />
+  <param name="minSpeed"  type="double" value="0.2" />
+
+
+   <!-- Run gmapping -->
+  <include file ="$(find jackal_navigation)/launch/include/gmapping.launch"/>
+   
+  <!-- <node pkg="linestopping" type="line_stopping.py" name="eyes" /> -->
+
+  
+</launch>

@@ -1,0 +1,133 @@
+import rospy
+import roslaunch
+import sys
+import time
+import os
+
+from   sensor_msgs.msg import Joy
+
+# class to read joystick messages and launch node
+class joy_control(object):
+
+    # define self routine
+    def __init__(self):
+
+        # define subscriber
+        rospy.Subscriber("/bluetooth_teleop/joy", Joy, self.joy_callback)
+        rate = rospy.Rate(5)
+
+        rospy.loginfo('started joystick routine..')
+
+        # define and init variables
+        self.start1 = False
+        self.stop1  = False
+        self.start2 = False
+        self.stop2  = False
+        self.start3 = False
+        self.stop3  = False
+        self.start4 = False
+        self.stop4  = False
+
+        # configure node roslaunch api
+        package1    = 'humanfollower'
+        executable1 = 'obj_follower.py'
+        node1 = roslaunch.core.Node(package1, executable1)
+        package2    = 'linefollower'
+        executable2 = 'line_follower.py'
+        node2 = roslaunch.core.Node(package2, executable2)
+        package3    = 'linestopping'
+        executable3 = 'line_stopping.py'
+        node3 = roslaunch.core.Node(package3, executable3)
+        package4    = 'wallfollower'
+        executable4 = 'laser_scan.py'
+        node4 = roslaunch.core.Node(package4, executable4)
+
+        while not rospy.is_shutdown():
+            # if start flag set: launch main launch-file
+
+            if self.start1:
+                launch = roslaunch.scriptapi.ROSLaunch()
+                launch.start()
+                process1 = launch.launch(node1)
+            if self.stop1:
+                process1.stop()
+            self.start1 = False
+            self.stop1  = False
+            if self.start2:
+                launch = roslaunch.scriptapi.ROSLaunch()
+                launch.start()
+                process2 = launch.launch(node2)
+            if self.stop2:
+                process2.stop()
+            self.start2 = False
+            self.stop2  = False
+            if self.start3:
+                launch = roslaunch.scriptapi.ROSLaunch()
+                launch.start()
+                process3 = launch.launch(node3)
+            if self.stop3:
+                process3.stop()
+            self.start3 = False
+            self.stop3  = False
+            if self.start4:
+                launch = roslaunch.scriptapi.ROSLaunch()
+                launch.start()
+                process4 = launch.launch(node4)
+            if self.stop4:
+                process4.stop()
+            self.start4 = False
+            self.stop4  = False
+            rate.sleep()
+	
+
+
+    # joystick callback routine
+    def joy_callback(self, data):
+
+        # define joystick buttons
+        x, circ, sq, tri, L1, R1, share, options, p4, L3, R3, DL, DR, DU, DD = data.buttons
+        llr, lud, L2, rlr, rud, R2 = data.axes
+
+        # Start object tracking
+        if (tri == 1) and (self.start1 == False) :
+            rospy.loginfo("Starting the object tracking routine...")
+            # set the start flag
+ 	    self.start1 = True         
+            
+        # Start lane following
+        if (circ == 1) and (self.start2 == False):
+            rospy.loginfo("Starting the Lane following routine...")
+            # set the start flag
+            self.start2 = True
+            
+        # Start lane stopping
+        if (x == 1) and (self.start3 == False):
+            rospy.loginfo("Starting the line stopping routine...")
+            # set the start flag
+            self.start3 = True
+            
+        # Start wall following
+        if (sq == 1) and (self.start4 == False):
+            rospy.loginfo("Starting the wall following routine...")
+            # set the start flag
+            self.start4 = True
+            
+
+        # Stop tracking
+        if (R1 == 1):
+            rospy.loginfo("Switching to Manual...")
+            # set stop flag
+            self.stop1  = True
+            self.stop2  = True
+            self.stop3  = True
+            self.stop4  = True
+	    
+
+# standard boilerplate
+if __name__ == "__main__":
+    try:
+        rospy.init_node("joy_start", anonymous=False)
+        #read in joystick input
+        run = joy_control()
+    except rospy.ROSInterruptException:
+	rospy.loginfo("joy_start node terminated.")
