@@ -1,8 +1,0 @@
-prefix=/home/robotics/royalpotato/skmore/jackal_navigation/install
-
-Name: statistics_msgs
-Description: Description of statistics_msgs
-Version: 0.13.4
-Cflags: -I/home/robotics/royalpotato/skmore/jackal_navigation/install/include
-Libs: -L/home/robotics/royalpotato/skmore/jackal_navigation/install/lib 
-Requires: message_runtime

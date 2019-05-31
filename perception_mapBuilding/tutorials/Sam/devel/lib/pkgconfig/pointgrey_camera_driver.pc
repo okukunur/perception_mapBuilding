@@ -1,8 +1,0 @@
-prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel
-
-Name: pointgrey_camera_driver
-Description: Description of pointgrey_camera_driver
-Version: 0.13.4
-Cflags: -I/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel/include
-Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel/lib 
-Requires: image_exposure_msgs nodelet roscpp sensor_msgs wfov_camera_msgs

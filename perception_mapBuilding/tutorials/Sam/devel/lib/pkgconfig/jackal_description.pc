@@ -1,8 +1,0 @@
-prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel
-
-Name: jackal_description
-Description: Description of jackal_description
-Version: 0.5.3
-Cflags: 
-Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel/lib 
-Requires: 

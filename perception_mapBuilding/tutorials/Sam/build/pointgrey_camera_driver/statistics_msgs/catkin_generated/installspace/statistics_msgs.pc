@@ -1,8 +1,0 @@
-prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install
-
-Name: statistics_msgs
-Description: Description of statistics_msgs
-Version: 0.13.4
-Cflags: -I/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install/include
-Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install/lib 
-Requires: message_runtime

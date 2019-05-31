@@ -1,8 +1,0 @@
-prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install
-
-Name: jackal_navigation
-Description: Description of jackal_navigation
-Version: 0.5.3
-Cflags: 
-Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/install/lib 
-Requires: 

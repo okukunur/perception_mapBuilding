@@ -1,8 +1,0 @@
-prefix=/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel
-
-Name: jackal_msgs
-Description: Description of jackal_msgs
-Version: 0.5.3
-Cflags: -I/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel/include
-Libs: -L/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/devel/lib 
-Requires: std_msgs message_runtime
