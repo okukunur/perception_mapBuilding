@@ -1,0 +1,2 @@
+set(wfov_camera_msgs_MESSAGE_FILES "/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/src/pointgrey_camera_driver/wfov_camera_msgs/msg/WFOVCompressedImage.msg;/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/src/pointgrey_camera_driver/wfov_camera_msgs/msg/WFOVImage.msg;/home/skysar/Documents/spring18/EE5531/lab3/royalpotato/jackal_navigation/src/pointgrey_camera_driver/wfov_camera_msgs/msg/WFOVTrigger.msg")
+set(wfov_camera_msgs_SERVICE_FILES "")
